@@ -48,6 +48,26 @@ export class AuthorController {
     return this.authorRepository.create(author);
   }
 
+
+  @patch('/authors/{id}')
+  @response(204, {
+    description: 'Category Authors success',
+  })
+  async updateById(
+    @param.path.number('id') id: number,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Author, {partial: true}),
+        },
+      },
+    })
+    category: Author,
+  ): Promise<void> {
+    await this.authorRepository.updateById(id, category);
+  }
+
+
   @get('/authors/count')
   @response(200, {
     description: 'Author model count',

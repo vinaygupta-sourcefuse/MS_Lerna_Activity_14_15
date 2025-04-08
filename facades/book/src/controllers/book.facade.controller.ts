@@ -138,4 +138,25 @@ export class BookApiGatewayController {
     }
   }
 
+
+  @patch('/books/{id}')
+  async updateBook(
+    @param.path.string('id') id: string,
+    @requestBody() book: IBook,
+  ): Promise<IBook | string> {
+    try {
+      const response = await axios.patch(
+        `${this.bookBaseURL}/books/${id}`,
+        book,
+      );
+
+      if (response.status !== 204) {
+        return `Failed to update book with ID ${id}`;
+      }
+
+      return `Book with ID ${id} updated successfully`;
+    } catch (error) {
+      return `Failed to update book with ID ${id}: ${error.message}`;
+    }
+  }
 }
