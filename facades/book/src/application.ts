@@ -29,9 +29,9 @@ export class BookApplication extends BootMixin(
        BearerTokenVerifyProvider,
      );
  
-    // //  //Authorization:
-    //  this.bind('sf.userAuthorization.config').to({});
-    //  this.component(AuthorizationComponent);
+     //Authorization:
+     this.bind('sf.userAuthorization.config').to({});
+     this.component(AuthorizationComponent);
 
 
     // Set up the custom sequence

@@ -50,7 +50,7 @@ export class BookApiGatewayController {
 
 
   @authenticate(STRATEGY.BEARER)
-  // @authorize({permissions: [PermissionKey.PostBook]})
+  @authorize({permissions: [PermissionKey.ViewBook]})
 
   @get('/books')
   async getAllBooks(): Promise<IBook[] | string> {
