@@ -42,3 +42,20 @@ use book;```
 
 
 
+for making it run again automatically 
+
+```
+npm install --save-dev nodemon concurrently
+```
+
+and  add this to package.json
+
+```
+"scripts": {
+  "build": "lb-tsc",
+  "start": "node -r source-map-support/register .",
+  "dev": "npm run build && concurrently \"npm:watch\" \"npm:start:watch\"",
+  "watch": "lb-tsc --watch",
+  "start:watch": "nodemon --watch dist --ext js --exec \"node -r source-map-support/register .\""
+}
+ ```

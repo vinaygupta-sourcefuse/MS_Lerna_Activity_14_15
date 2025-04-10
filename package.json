@@ -5,7 +5,10 @@
     "packages/*",
     "services/*"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "loopback4-authentication": "^12.2.0",
+    "loopback4-authorization": "^7.0.3"
+  },
   "devDependencies": {
     "lerna": "^8.2.1"
   }

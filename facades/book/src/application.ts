@@ -9,6 +9,9 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {AuthorizationComponent} from 'loopback4-authorization';
+import {AuthenticationComponent, Strategies} from 'loopback4-authentication';
+import {BearerTokenVerifyProvider} from './provider/bearer-token-verify.provider';
 
 export {ApplicationConfig};
 
@@ -17,6 +20,19 @@ export class BookApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+
+
+    
+     //Authentication:
+     this.component(AuthenticationComponent);
+     this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
+       BearerTokenVerifyProvider,
+     );
+ 
+    // //  //Authorization:
+    //  this.bind('sf.userAuthorization.config').to({});
+    //  this.component(AuthorizationComponent);
+
 
     // Set up the custom sequence
     this.sequence(MySequence);

@@ -5,6 +5,9 @@ import axios from 'axios';
 // Ensure the correct path to the book model
 import {IBook} from '../models/book';
 import {IBookDetails} from '../models/book';
+import { authenticate, STRATEGY } from 'loopback4-authentication';
+import { authorize } from 'loopback4-authorization';
+import { PermissionKey } from '../utils/permissionsKeys';
 
 export class BookApiGatewayController {
   private  authorBaseURL = 'http://localhost:3005';
@@ -41,9 +44,13 @@ export class BookApiGatewayController {
 
       return responseBook.data;
     } catch (error) {
-      return `Failed to create book: ${error.message}`;
+      return `Failed to create book: ${error.message}, if status code is 422 means book already exists`;
     }
   }
+
+
+  @authenticate(STRATEGY.BEARER)
+  // @authorize({permissions: [PermissionKey.PostBook]})
 
   @get('/books')
   async getAllBooks(): Promise<IBook[] | string> {
@@ -78,7 +85,7 @@ export class BookApiGatewayController {
           } catch (error) {
             console.error(
               `Error fetching details for book ${book.isbn}:`,
-              error,
+            
             );
             return {
               title: book.title,
@@ -158,5 +165,5 @@ export class BookApiGatewayController {
     } catch (error) {
       return `Failed to update book with ID ${id}: ${error.message}`;
     }
-  }
+  } 
 }
