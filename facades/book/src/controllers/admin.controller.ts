@@ -46,8 +46,8 @@ export class UserController {
     }
   }
 
-    @authenticate(STRATEGY.BEARER)
-    @authorize({permissions: [PermissionKey.DeleteUser]})
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: [PermissionKey.DeleteUser]})
   @del('/users/{id}')
   @response(204, {
     description: 'User DELETE success',
@@ -78,6 +78,8 @@ export class UserController {
     }
   }
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: [PermissionKey.PostUser]})
   @post('/users')
   async createUser(@requestBody() userData: Signup): Promise<Signup> {
     try {
@@ -94,6 +96,8 @@ export class UserController {
     }
   }
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: [PermissionKey.PostAdmin]})
   @post('/admin')
   async createAdmin(@requestBody() userData: Signup): Promise<Signup> {
     try {

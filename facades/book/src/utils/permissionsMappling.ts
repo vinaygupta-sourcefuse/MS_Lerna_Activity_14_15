@@ -16,6 +16,8 @@ export const RolePermissions: {[role: string]: PermissionKey[]} = {
     PermissionKey.PostCategory,
     PermissionKey.ViewUser,
     PermissionKey.DeleteUser,
+    PermissionKey.PostUser,
+    PermissionKey.PostAdmin,
   ],
   user: [
     PermissionKey.ViewBook,

@@ -13,4 +13,6 @@ export enum PermissionKey {
     UpdateCategory = 'update_category',
     ViewUser = 'view_user',
     DeleteUser = 'delete_user',
+    PostUser = 'create_user',
+    PostAdmin = 'create_admin',
   }
