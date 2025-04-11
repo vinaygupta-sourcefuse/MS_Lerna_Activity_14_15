@@ -1,21 +1,31 @@
-import {get, post, patch, del, requestBody, param, HttpErrors, RestBindings, Request} from '@loopback/rest';
+import {
+  get,
+  post,
+  patch,
+  del,
+  requestBody,
+  param,
+  HttpErrors,
+  RestBindings,
+  Request,
+} from '@loopback/rest';
 import axios from 'axios';
 
 /* Book Interface */
 // Ensure the correct path to the book model
 import {IBook} from '../models/book';
 import {IBookDetails} from '../models/book';
-import { authenticate, STRATEGY } from 'loopback4-authentication';
-import { authorize } from 'loopback4-authorization';
-import { PermissionKey } from '../utils/permissionsKeys';
-import { inject } from '@loopback/core';
+import {authenticate, STRATEGY} from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKey} from '../utils/permissionsKeys';
+import {inject} from '@loopback/core';
 
 export class BookApiGatewayController {
-  private  authorBaseURL = 'http://localhost:3005';
-  private  categoryBaseURL = 'http://localhost:3007';
+  private authorBaseURL = 'http://localhost:3005';
+  private categoryBaseURL = 'http://localhost:3007';
   private bookBaseURL = 'http://localhost:3006';
   private facadeBaseURL = 'http://localhost:3000';
-  constructor( @inject(RestBindings.Http.REQUEST) private req: Request) {}
+  constructor(@inject(RestBindings.Http.REQUEST) private req: Request) {}
 
   /* Book End Points */
 
@@ -24,7 +34,7 @@ export class BookApiGatewayController {
   @post('/books')
   async createBook(@requestBody() book: IBook): Promise<IBook | string> {
     try {
-        console.log('💥💥💥💥💥💥💥💥💥💥💥💥 Creating book:', book);
+      console.log('💥💥💥💥💥💥💥💥💥💥💥💥 Creating book:', book);
       const responseBook = await axios.post(`${this.bookBaseURL}/books`, book);
 
       const responseAuthorName = await axios.post(
@@ -32,9 +42,10 @@ export class BookApiGatewayController {
         {
           isbn: book.isbn,
           author_name: book.author_name,
-        },)
+        },
+      );
 
-        console.log('💥💥💥💥💥💥💥💥💥💥💥💥',responseAuthorName)
+      console.log('💥💥💥💥💥💥💥💥💥💥💥💥', responseAuthorName);
       const responseCategoryName = await axios.post(
         `${this.categoryBaseURL}/categories`,
         {
@@ -42,15 +53,13 @@ export class BookApiGatewayController {
           genre: book.genre,
         },
       );
-      console.log('💥💥💥💥💥💥💥💥💥💥💥💥',responseCategoryName)
-
+      console.log('💥💥💥💥💥💥💥💥💥💥💥💥', responseCategoryName);
 
       return responseBook.data;
     } catch (error) {
       return `Failed to create book: ${error.message}, if status code is 422 means book already exists`;
     }
   }
-
 
   @authenticate(STRATEGY.BEARER)
   @authorize({permissions: [PermissionKey.ViewBook]})
@@ -85,10 +94,7 @@ export class BookApiGatewayController {
               },
             };
           } catch (error) {
-            console.error(
-              `Error fetching details for book ${book.isbn}:`,
-            
-            );
+            console.error(`Error fetching details for book ${book.isbn}:`);
             return {
               title: book.title,
               isbn: book.isbn,
@@ -149,97 +155,66 @@ export class BookApiGatewayController {
     }
   }
 
-  // @authenticate(STRATEGY.BEARER)
-  // @authorize({permissions: [PermissionKey.DeleteBook]})
-  // @del('/book/{isbn}')
-  // async deleteBook(@param.path.string('isbn') isbn: string): Promise<string> {
-  //   try {
-
-  //     //finding book using isbn
-  //     const response = await axios.get(`${this.facadeBaseURL}/books/${isbn}`);
-  //     const book = response.data;
-  //     if (!book) {
-  //       // Return a clear error message if the book is not found
-  //       return `Book with ISBN ${isbn} not found`;
-  //     }
-      
-  //     const author_id = book.author.author_id;
-  //     const category_id = book.category.category_id;
-    
-  //     // Delete the book
-  //     await axios.delete(`${this.bookBaseURL}/books/${isbn}`);
-
-  //     console.log('book deleted successfully')
-  //     // Delete the author associated with the book
-  //     await axios.delete(`${this.authorBaseURL}/authors/${author_id}`);
-
-  //     console.log('author deleted successfully')
-  //     // Delete the category associated with the book
-  //     await axios.delete(`${this.categoryBaseURL}/categories/${category_id}`);
-
-  //     console.log('category deleted successfully')
-  //     return `Book with ID ${isbn}, its author, and category deleted successfully`;
-  //   } catch (error) {
-  //     return `Failed to delete book with ID ${isbn}: ${error.message}`;
-  //   }
-  // }
-
   @authenticate(STRATEGY.BEARER)
-@authorize({permissions: [PermissionKey.DeleteBook]})
-@del('/book/{isbn}')
-async deleteBook(@param.path.string('isbn') isbn: string): Promise<string> {
-  const token = this.req.headers.authorization;
-  try {
-    // Step 1: Get the book
-    let book;
+  @authorize({permissions: [PermissionKey.DeleteBook]})
+  @del('/book/{isbn}')
+  async deleteBook(@param.path.string('isbn') isbn: string): Promise<string> {
+    const token = this.req.headers.authorization;
     try {
-      const response = await axios.get(`${this.facadeBaseURL}/books/${isbn}`, {
-        headers: {Authorization: token},
-      });
-      book = response.data;
-    } catch (err) {
-      throw new Error(`Book fetch failed: ${err.message}`);
-    }
-
-    const author_id = book?.author?.author_id;
-    const category_id = book?.category?.category_id;
-
-    // Step 2: Delete book
-    try {
-      await axios.delete(`${this.bookBaseURL}/books/${isbn}`, {
-        headers: {Authorization: token},
-      });
-    } catch (err) {
-      throw new Error(`Book delete failed: ${err.message}`);
-    }
-
-    // Step 3: Delete author
-    if (author_id) {
+      // Step 1: Get the book
+      let book;
       try {
-        await axios.delete(`${this.authorBaseURL}/authors/${author_id}`, {
+        const response = await axios.get(
+          `${this.facadeBaseURL}/books/${isbn}`,
+          {
+            headers: {Authorization: token},
+          },
+        );
+        book = response.data;
+      } catch (err) {
+        throw new Error(`Book fetch failed: ${err.message}`);
+      }
+
+      const author_id = book?.author?.author_id;
+      const category_id = book?.category?.category_id;
+
+      // Step 2: Delete book
+      try {
+        await axios.delete(`${this.bookBaseURL}/books/${isbn}`, {
           headers: {Authorization: token},
         });
       } catch (err) {
-        console.warn(`Author delete failed: ${err.message}`);
+        throw new Error(`Book delete failed: ${err.message}`);
       }
-    }
 
-    // Step 4: Delete category
-    if (category_id) {
-      try {
-        await axios.delete(`${this.categoryBaseURL}/categories/${category_id}`, {
-          headers: {Authorization: token},
-        });
-      } catch (err) {
-        console.warn(`Category delete failed: ${err.message}`);
+      // Step 3: Delete author
+      if (author_id) {
+        try {
+          await axios.delete(`${this.authorBaseURL}/authors/${author_id}`, {
+            headers: {Authorization: token},
+          });
+        } catch (err) {
+          console.warn(`Author delete failed: ${err.message}`);
+        }
       }
-    }
 
-    return `Book ${isbn} and its associations deleted successfully.`;
-  } catch (error) {
-    throw new HttpErrors.InternalServerError(error.message);
+      // Step 4: Delete category
+      if (category_id) {
+        try {
+          await axios.delete(
+            `${this.categoryBaseURL}/categories/${category_id}`,
+            {
+              headers: {Authorization: token},
+            },
+          );
+        } catch (err) {
+          console.warn(`Category delete failed: ${err.message}`);
+        }
+      }
+
+      return `Book ${isbn} and its associations deleted successfully.`;
+    } catch (error) {
+      throw new HttpErrors.InternalServerError(error.message);
+    }
   }
-}
-
-
 }
