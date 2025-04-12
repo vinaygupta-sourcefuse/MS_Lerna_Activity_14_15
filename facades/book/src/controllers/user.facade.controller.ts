@@ -1,8 +1,15 @@
-import {post, requestBody, HttpErrors} from '@loopback/rest';
+import {
+  post,
+  requestBody,
+  HttpErrors,
+  Response,
+  RestBindings,
+} from '@loopback/rest';
 import axios from 'axios';
 
 /* Book Interface */
 import {Signup, Login, Token} from '../models/user';
+import {inject} from '@loopback/core';
 
 export class AuthController {
   private authBaseURL = 'http://localhost:3011';
@@ -12,7 +19,10 @@ export class AuthController {
   /* Auth End Points */
 
   @post('/user/signup')
-  async signupUser(@requestBody() userData: Signup): Promise<Token> {
+  async signupUser(
+    @requestBody() userData: Signup,
+    @inject(RestBindings.Http.RESPONSE) res: Response, // LoopBack/Express response
+  ): Promise<Token> {
     try {
       // Ensure the role is fixed to "user" regardless of the input
       userData.role = 'user';
@@ -26,34 +36,45 @@ export class AuthController {
         );
       }
 
+      // Set access token cookie with security flags
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true, // Prevents JavaScript access
+        secure: process.env.NODE_ENV === 'production', // Enforces HTTPS in production
+        sameSite: 'strict', // Prevents CSRF
+        maxAge: 15 * 60 * 1000, // 15 minutes expiration (matches token expiry)
+        path: '/', // Accessible across all routes
+      });
+
+      // Set refresh token cookie with security flags
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
+        path: '/',
+      });
+
       const token: any = {accessToken, refreshToken};
 
       return token;
     } catch (error) {
-      if (error.response) {
-        console.error('Error during signup API call:', error.response.data);
-        throw new HttpErrors.Unauthorized(
-          `Signup failed: ${error.response.data.message || 'Unknown error'}`,
-        );
-      } else if (error.request) {
-        console.error(
-          'Error during signup: No response from the server',
-          error.request,
-        );
-        throw new HttpErrors.GatewayTimeout(
-          'Signup service is unavailable. Please try again later.',
-        );
-      } else {
-        console.error('Error during signup:', error.message);
-        throw new HttpErrors.InternalServerError(
-          'An unexpected error occurred during signup.',
-        );
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response?.data?.message ||
+          'Authentication failed or Username already exists';
+        throw new HttpErrors.Unauthorized(message);
       }
+
+      console.error('Unexpected login error:', error);
+      throw new HttpErrors.InternalServerError('Login processing failed');
     }
   }
 
   @post('/admin/signup')
-  async signupAdmin(@requestBody() userData: Signup): Promise<Token> {
+  async signupAdmin(
+    @requestBody() userData: Signup,
+    @inject(RestBindings.Http.RESPONSE) res: Response, // LoopBack/Express response
+  ): Promise<Token> {
     try {
       // Ensure the role is fixed to "user" regardless of the input
       userData.role = 'admin';
@@ -67,34 +88,45 @@ export class AuthController {
         );
       }
 
+      // Set access token cookie with security flags
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true, // Prevents JavaScript access
+        secure: process.env.NODE_ENV === 'production', // Enforces HTTPS in production
+        sameSite: 'strict', // Prevents CSRF
+        maxAge: 15 * 60 * 1000, // 15 minutes expiration (matches token expiry)
+        path: '/', // Accessible across all routes
+      });
+
+      // Set refresh token cookie with security flags
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
+        path: '/',
+      });
+
       const token: any = {accessToken, refreshToken};
 
       return token;
     } catch (error) {
-      if (error.response) {
-        console.error('Error during signup API call:', error.response.data);
-        throw new HttpErrors.Unauthorized(
-          `Signup failed: ${error.response.data.message || 'Unknown error'}`,
-        );
-      } else if (error.request) {
-        console.error(
-          'Error during signup: No response from the server',
-          error.request,
-        );
-        throw new HttpErrors.GatewayTimeout(
-          'Signup service is unavailable. Please try again later.',
-        );
-      } else {
-        console.error('Error during signup:', error.message);
-        throw new HttpErrors.InternalServerError(
-          'An unexpected error occurred during signup.',
-        );
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response?.data?.message ||
+          'Authentication failed or Username already exists';
+        throw new HttpErrors.Unauthorized(message);
       }
+
+      console.error('Unexpected login error:', error);
+      throw new HttpErrors.InternalServerError('Login processing failed');
     }
   }
 
   @post('/login')
-  async login(@requestBody() credentials: Login): Promise<Token> {
+  async login(
+    @requestBody() credentials: Login,
+    @inject(RestBindings.Http.RESPONSE) res: Response, // LoopBack/Express response
+  ): Promise<Token> {
     try {
       const response = await axios.post(
         `${this.authBaseURL}/login`,
@@ -109,38 +141,49 @@ export class AuthController {
         );
       }
 
+      // Set access token cookie with security flags
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true, // Prevents JavaScript access
+        secure: process.env.NODE_ENV === 'production', // Enforces HTTPS in production
+        sameSite: 'strict', // Prevents CSRF
+        maxAge: 15 * 60 * 1000, // 15 minutes expiration (matches token expiry)
+        path: '/', // Accessible across all routes
+      });
+
+      // Set refresh token cookie with security flags
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
+        path: '/',
+      });
+
       const token: any = {accessToken, refreshToken};
 
       return token;
     } catch (error) {
-      if (error.response) {
-        console.error('Error during login API call:', error.response.data);
-        throw new HttpErrors.Unauthorized(
-          `Login failed: ${error.response.data.message || 'Invalid credentials.'}`,
-        );
-      } else if (error.request) {
-        console.error(
-          'Error during login: No response from the server',
-          error.request,
-        );
-        throw new HttpErrors.GatewayTimeout(
-          'Login service is unavailable. Please try again later.',
-        );
-      } else {
-        console.error('Error during login:', error.message);
-        throw new HttpErrors.InternalServerError(
-          'An unexpected error occurred during login.',
-        );
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response?.data?.message || 'Authentication failed';
+        throw new HttpErrors.Unauthorized(message);
       }
+
+      console.error('Unexpected login error:', error);
+      throw new HttpErrors.InternalServerError('Login processing failed');
     }
   }
 
   @post('/logout')
   async logout(
     @requestBody() body: {refreshToken: string},
+    @inject(RestBindings.Http.RESPONSE) res: Response, // LoopBack/Express response
   ): Promise<{message: string}> {
     try {
       const response = await axios.post(`${this.authBaseURL}/logout`, body);
+
+      res.clearCookie('accessToken');
+      res.clearCookie('refreshToken');
 
       return response.data;
     } catch (error) {
@@ -166,41 +209,4 @@ export class AuthController {
     }
   }
 
-  //it should be implemented in provider or inside the sequence so it can be used like middleware
-  //   @post('/refresh-token')
-  //   async refreshToken(
-  //     @requestBody() body: {refreshToken: string},
-  //   ): Promise<{accessToken: string}> {
-  //     try {
-  //       const response = await axios.post(
-  //         `${this.authBaseURL}/refresh-token`,
-  //         body,
-  //       );
-
-  //       return response.data;
-  //     } catch (error) {
-  //       if (error.response) {
-  //         console.error(
-  //           'Error during refresh token API call:',
-  //           error.response.data,
-  //         );
-  //         throw new HttpErrors.Unauthorized(
-  //           `Refresh token failed: ${error.response.data.message || 'Unknown error'}`,
-  //         );
-  //       } else if (error.request) {
-  //         console.error(
-  //           'Error during refresh token: No response from the server',
-  //           error.request,
-  //         );
-  //         throw new HttpErrors.GatewayTimeout(
-  //           'Refresh token service is unavailable. Please try again later.',
-  //         );
-  //       } else {
-  //         console.error('Error during refresh token:', error.message);
-  //         throw new HttpErrors.InternalServerError(
-  //           'An unexpected error occurred during refresh token.',
-  //         );
-  //       }
-  //     }
-  //   }
 }

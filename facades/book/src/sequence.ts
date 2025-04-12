@@ -3,6 +3,9 @@ import { FindRoute, HttpErrors, InvokeMethod, ParseParams, Reject, RequestContex
 import { AuthenticateFn, AuthenticationBindings } from "loopback4-authentication";
 import { User } from "./models/user";
 import { AuthorizationBindings, AuthorizeErrorKeys, AuthorizeFn } from "loopback4-authorization";
+import {TokenRefreshHelper} from './utils/token-refresh.helper'; // Adjust path accordingly
+
+
 export class MySequence implements SequenceHandler {
   constructor(
     @inject(SequenceActions.FIND_ROUTE) protected findRoute: FindRoute,
@@ -19,7 +22,8 @@ export class MySequence implements SequenceHandler {
   async handle(context: RequestContext) {
     try {
       const {request, response} = context;
-
+      await TokenRefreshHelper.refreshAccessTokenIfNeeded(request, response);
+      
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
       request.body = args[args.length - 1];

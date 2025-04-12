@@ -18,7 +18,7 @@ import {IBookDetails} from '../models/book';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {authorize} from 'loopback4-authorization';
 import {PermissionKey} from '../utils/permissionsKeys';
-import {inject} from '@loopback/core';
+import {inject, intercept} from '@loopback/core';
 
 export class BookApiGatewayController {
   private authorBaseURL = 'http://localhost:3005';

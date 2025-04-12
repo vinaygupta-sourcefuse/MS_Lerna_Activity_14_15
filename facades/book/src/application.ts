@@ -22,7 +22,6 @@ export class BookApplication extends BootMixin(
     super(options);
 
 
-    
      //Authentication:
      this.component(AuthenticationComponent);
      this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
