@@ -34,7 +34,10 @@
     "prestart": "npm run migrate && npm run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "dev": "npm run rebuild && concurrently \"npm:watch\" \"npm:start:watch\"",
+    "watch": "lb-tsc --watch",
+    "start:watch": "nodemon --watch dist --ext js --exec \"node -r source-map-support/register .\""
   },
   "repository": {
     "type": "git",
