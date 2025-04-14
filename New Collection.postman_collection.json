@@ -1,0 +1,522 @@
+{
+	"info": {
+		"_postman_id": "b2bc42ba-872b-4fba-81be-17f0b13fcdb2",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43650499"
+	},
+	"item": [
+		{
+			"name": "BookFacade",
+			"item": [
+				{
+					"name": "books",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "book",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"radhe krishnaaa ji\",\n  \"isbn\": 30,\n  \"price\": 15.99,\n  \"pubDate\": \"1925-04-10\",\n  \"author_name\": \"premanandji\",\n  \"genre\": \"Bhakti\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/books",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoicmFta3VtYXIgZ3VwdGEiLCJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQzNzA3MDksImV4cCI6MTc0NDM3MDc2OSwiaXNzIjoiaXNzdWVyIn0.0RGi6Q7i6DFJqAnFL4i9A664kDoZHikwU8IMJvOK84I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/book/15",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserFacade",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"ramkumar gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInRva2VuVHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NDQzNjg0ODcsImV4cCI6MTc0NDk3MzI4NywiaXNzIjoiaXNzdWVyIn0.g7eOKnfeNCP-ueIHkgqI22WXXLZh1uYhA6dZYL66uuU\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserSignup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoicmFta3VtYXIgZ3VwdGEiLCJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQ0MzM1NTIsImV4cCI6MTc0NDQzMzYxMiwiaXNzIjoiaXNzdWVyIn0.babIOLvc00SyA45REGoZ87dMS13daVRum7LdeZyLxa0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"rajkumer gdhuptta\",\n  \"email\": \"rajesdh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"  //for testing, it bydefault take user\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdminSignup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoicmFta3VtYXIgZ3VwdGEiLCJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQ0MzM0ODQsImV4cCI6MTc0NDQzMzU0NCwiaXNzIjoiaXNzdWVyIn0.6_lijWtUUQKwO-u4JwkQHc6jN7kM7X6Q_Fk-78M1Qoc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"rajkumer gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"user\" //for testing, it bydefault take admin\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/admin/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AdminFacade",
+			"item": [
+				{
+					"name": "addAdmin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"ramkumaras gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/admin",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"name\": \"ramkumar gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoicmFta3VtYXIgZ3VwdGEiLCJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQzOTY0MDYsImV4cCI6MTc0NDM5NjQ2NiwiaXNzIjoiaXNzdWVyIn0.01SwNBO2av6IbAx-tJqPQrlQsIy2dfnF88pyug8TsG0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users/15",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInVzZXJuYW1lIjoicmFta3VtYXIgZ3VwdGEiLCJlbWFpbCI6InJhamVzaEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDQ0NTE5NjQsImV4cCI6MTc0NDQ1MjAyNCwiaXNzIjoiaXNzdWVyIn0.2aVv9g2VNLixGCSHKMf2-CcQt-aReRF9hWFDeb7E73A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3011/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n  \"name\": \"ramkumar gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3011/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n  \"name\": \"raj gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3011/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \n  \"name\": \"ramkumar gupta\",\n  \"email\": \"rajesh@gmail.com\",\n  \"password\": \"123\",\n  \"role\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3011/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInRva2VuVHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NDQzNjc5NTMsImV4cCI6MTc0NDk3Mjc1MywiaXNzIjoiaXNzdWVyIn0.x0cP4FfAh1nOB9zvg2MHQp6gC3oe_3lDLYg-2Jy2EQU\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3011/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RefreshToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInRva2VuVHlwZSI6InJlZnJlc2giLCJpYXQiOjE3NDQ0MzU4NDMsImV4cCI6MTc0NTA0MDY0MywiaXNzIjoiaXNzdWVyIn0.amgx_EGXMftEzVi65eJsHZeU15ogqNmMePN0t1QoFLk\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3011/refresh-token",
+					"host": [
+						"localhost"
+					],
+					"port": "3011",
+					"path": [
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
