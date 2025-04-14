@@ -18,15 +18,18 @@ export class TokenRefreshHelper {
     let accessToken = cookies.accessToken;
     const refreshToken = cookies.refreshToken;
 
-    if (!accessToken) {
-      throw new HttpErrors.Unauthorized('Access token not found');
+    console.log("accessToken",accessToken)
+    console.log("refreshToken ", refreshToken)
+    if (!refreshToken) {
+      throw new HttpErrors.Unauthorized('Refresh token not found');
     }
 
     try {
       jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET || '1');
       req.headers.authorization = `Bearer ${accessToken}`;
     } catch (err: any) {
-      if (err.name === 'TokenExpiredError' && refreshToken) {
+      console.log("error name", err.name)
+      if ((err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') && refreshToken) {
         try {
           const refreshResponse = await axios.post(
             `http://localhost:3011/refresh-token`,
