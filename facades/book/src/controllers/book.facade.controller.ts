@@ -157,7 +157,7 @@ export class BookApiGatewayController {
 
   @authenticate(STRATEGY.BEARER)
   @authorize({permissions: [PermissionKey.DeleteBook]})
-  @del('/book/{isbn}')
+  @del('/books/{isbn}')
   async deleteBook(@param.path.string('isbn') isbn: string): Promise<string> {
     const token = this.req.headers.authorization;
     try {

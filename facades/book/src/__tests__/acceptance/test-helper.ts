@@ -4,19 +4,21 @@ import {
   givenHttpServerConfig,
   Client,
 } from '@loopback/testlab';
+import {ApplicationConfig} from '@loopback/core';
+
+export interface AppWithClient {
+  app: BookApplication;
+  client: Client;
+}
 
 export async function setupApplication(): Promise<AppWithClient> {
-  const restConfig = givenHttpServerConfig({
-    // Customize the server configuration here.
-    // Empty values (undefined, '') will be ignored by the helper.
-    //
-    // host: process.env.HOST,
-    // port: +process.env.PORT,
-  });
+  const restConfig: ApplicationConfig = {
+    rest: givenHttpServerConfig({
+      port: 0, // Random port for parallel tests
+    }),
+  };
 
-  const app = new BookApplication({
-    rest: restConfig,
-  });
+  const app = new BookApplication(restConfig);
 
   await app.boot();
   await app.start();
@@ -24,9 +26,4 @@ export async function setupApplication(): Promise<AppWithClient> {
   const client = createRestAppClient(app);
 
   return {app, client};
-}
-
-export interface AppWithClient {
-  app: BookApplication;
-  client: Client;
 }
