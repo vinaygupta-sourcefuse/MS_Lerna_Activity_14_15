@@ -79,7 +79,10 @@ export class AuthController {
         refreshToken,
       };
     } catch (error) {
-      console.error('Error during login:', error.message);
+      if (error instanceof HttpErrors.HttpError) {
+        throw error; // Re-throw known HTTP errors
+      }
+      console.error('Unexpected error during login:', error.message);
       throw new HttpErrors.InternalServerError('Login failed');
     }
   }
