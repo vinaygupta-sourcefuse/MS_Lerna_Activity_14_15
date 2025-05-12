@@ -1,7 +1,7 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
 
-const config = {
+export const config = {
   name: 'category',
   connector: 'mysql',
   url: 'mysql://vinay:password@localhost/category',
